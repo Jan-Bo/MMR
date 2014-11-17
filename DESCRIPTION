@@ -1,0 +1,26 @@
+Package: MMR
+Type: Package
+Title: Build Marketing-Mix models with Regression Analysis
+Version: 0.0.01
+Date: 2014-10-04
+Author: Gabriel Mohanna
+Maintainer: Gabriel Mohanna <gabrielm@gmail.com>
+Description: Misc functions for training and plotting Marketing-Mix models
+Depends:
+    R (>= 3.1),
+    stats,
+    ggplot2,
+    grid,
+    gridExtra,
+    reshape2,
+    minpack.lm,
+    parallel
+Imports:
+    stats,
+    ggplot2,
+    grid,
+    gridExtra,
+    reshape2,
+    minpack.lm,
+    parallel
+License: GPL-3

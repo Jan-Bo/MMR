@@ -1,0 +1,17 @@
+{
+    "contents" : "dep.var = \"sales\"\nfixed=c(\"trend\")\nfixed.adstock=rep(0, length(fixed))\nrandom=c(\"ad1\")\ntransform=character()\n\n# Apply adstock transformations\nfixed <- mapply(\n    function(var.name, var.value) {\n        if(var.value) {\n            paste0(\"adstock(\", var.name, \", \", var.value, \")\")\n        } else {\n            paste0(var.name)\n        }\n    },\n    fixed, fixed.adstock,\n    SIMPLIFY = F)\n\nrandom <- mapply(\n    function(var.name) {\n        paste0(\"adstock(\", var.name, \", \", var.name, \".adstock)\")\n    },\n    random,\n    SIMPLIFY = F)\n\nadstock.transfrom <- append(fixed, random)\n\n# Apply other functional transformations were they apply\nother.transform <- mapply(\n    function(var.name, var.adstock) {\n        if(var.name %in% names(transform)) {\n            var.transform <- transform[var.name]\n            if(var.transform==\"power\") {\n                paste0(var.name, \".coef*(\", var.adstock, \"^\", var.name, \".power)\")\n            } else if(var.transform==\"negexp\") {\n                paste0(var.name, \".coef*\", \"(1 - exp(-\", var.name, \".power * \", var.adstock, \"))\")\n            } else if(var.transform==\"log\") {\n                paste0(var.name, \".coef*\", \"log(1+\", var.adstock, \")\")\n            } else if(var.transform==\"powerinv\") {\n                paste0(var.name, \".coef/\", \"(\", var.name, \".power + 1/\", var.adstock, \")\")\n            }\n        } else {\n            paste0(var.name, \".coef*\", var.adstock)\n        }\n    },\n    names(adstock.transfrom), adstock.transfrom,\n    SIMPLIFY = F)\n\npaste0(dep.var, \" ~ \",\n       \"inTrain * (Intercept\", \n       paste(rep(\" +\", length(other.transform)), other.transform, collapse = \"\"),\n       \")\")\n\n\n#' Write Optim Formula\n#' \n#' Writes the inTrain formula such as \"sales ~ inTrain * (Trend + ad1)\n#' \n#' @param dep.var A numeric vector\n#' @param fixed A character vector of variable names that won't be adstocked\n#' @param fixed.adstocked A numeric vector same length as \\code{fixed}\n#' @param random A character vector of variable names to be adstocked\n#' \n#' @author Gabriel Mohanna\n#' \nMMR.Optim.Formula <- function(dep.var, \n                              fixed=character(), \n                              fixed.adstock=rep(0, length(fixed)),\n                              random=character()) {\n    if(length(fixed)) {\n        fixed.coef <- paste0(fixed, \".coef\"     )\n    } else {\n        fixed.coef <- character()\n    }\n    \n    if(length(random)) {\n        random.coef    <- paste0(random, \".coef\"   )\n        random.adstock <- paste0(random, \".adstock\")\n    } else {\n        random.coef    <- character()\n        random.adstock <- character()\n    }\n    \n    paste0(dep.var, \" ~ \",\n           \"inTrain * (Intercept\", \n           if(length(fixed.coef )) {paste0(\" + \", paste0(fixed.coef , \"*adstock(\", fixed , \", \", fixed.adstock , \")\", collapse = \" + \"))}, \n           if(length(random.coef)) {paste0(\" + \", paste0(random.coef, \"*adstock(\", random, \", \", random.adstock, \")\", collapse = \" + \"))},\n           \")\")\n}\n",
+    "created" : 1415642799255.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "3355246321",
+    "id" : "3A8CBCF2",
+    "lastKnownWriteTime" : 1414256699,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

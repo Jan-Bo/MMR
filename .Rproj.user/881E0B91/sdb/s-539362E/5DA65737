@@ -1,0 +1,17 @@
+{
+    "contents" : "library(caret)\n\ncreateTimeSlices(rep(1, 10), initialWindow = 5, horizon = 2, fixedWindow = F)\n\ncreateInTrainSlices(, initialWindow = 5, stepSize = 2, fixedWindow = T)\nlibrary(MMR)\nset.seed(123)\nsapply(createInTrainSamples(iris, times = 10, p=.7, type=1), sum, simplify = T)/nrow(iris)\nsapply(createInTrainSamples(iris, times = 10, p=function() sample(c(.5, .9), 1), type=1), sum, simplify = T)/nrow(iris)\n\n\nlibrary(parallel)\ntempFun <- function(sequance, prob) {\n    print(class(prob))\n    mclapply(sequence, function(x) print(prob()))\n}\nrandProb <- function() {\n    runif(1, 1, 100)\n}\ntempFun(list(1, 2, 3), randProb)\n\nlapply(1:5, function(x) tempFun(runif(1, 1, 100)))\n",
+    "created" : 1412994326986.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "2973893627",
+    "id" : "5DA65737",
+    "lastKnownWriteTime" : 6,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
