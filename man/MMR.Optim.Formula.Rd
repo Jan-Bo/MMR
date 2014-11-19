@@ -3,17 +3,23 @@
 \alias{MMR.Optim.Formula}
 \title{Write Optim Formula}
 \usage{
-MMR.Optim.Formula(dep.var, fixed = character(), fixed.adstock = rep(0,
-  length(fixed)), random = character(), transform = character())
+MMR.Optim.Formula(dep.var, coef.vars, adstock.min, adstock.max, transform.vars,
+  transform.min, transform.max)
 }
 \arguments{
 \item{dep.var}{A numeric vector}
 
-\item{fixed}{A character vector of variable names that won't be adstocked}
+\item{coef.vars}{A character vector}
 
-\item{fixed.adstocked}{A numeric vector same length as \code{fixed}}
+\item{adstock.min}{A numeric vector}
 
-\item{random}{A character vector of variable names to be adstocked}
+\item{adstock.max}{A numeric vector}
+
+\item{transform.vars}{A character vector}
+
+\item{transform.min}{A numeric vector}
+
+\item{transform.max}{A numeric vector}
 }
 \description{
 Writes the inTrain formula such as "sales ~ inTrain * (Trend + ad1)

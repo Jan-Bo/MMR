@@ -3,29 +3,38 @@
 \alias{MMR.Optim.InTrain}
 \title{Nonlinear Least Squares Parameter Estimation}
 \usage{
-MMR.Optim.InTrain(dep.var, indp.vars, min.adstock, max.adstock, keep.vars,
-  transform, data, algorithm, inTrain, indp.try)
+MMR.Optim.InTrain(dep.var, indp.vars, data, algorithm, inTrain, keep.vars,
+  adstock.vars, adstock.min, adstock.max, transform.vars, transform.min,
+  transform.max, lags, coef.min, coef.max, indp.try)
 }
 \arguments{
-\item{dep.var}{Dependent variable}
+\item{dep.var}{A character string for dependent variable}
 
-\item{indp.vars}{List of variable names to be tried}
-
-\item{min.adstock}{An optional list as a numeric vector of minimum adstock for each \code{indp.vars}}
-
-\item{max.adstock}{An optional list as a numeric vector of maximum adstock for each \code{indp.vars}}
-
-\item{keep.vars}{An optional list of variable names that will be kept in each model. \code{keep.vars} must be part of \code{indep.vars}}
-
-\item{transform}{TBD}
+\item{indp.vars}{A character vector of variable names to be tried}
 
 \item{data}{A dataset from in which to evaluate the \code{indp.vars}}
 
-\item{algorithm}{The algorithm to use {"LM", "port"}}
+\item{algorithm}{A character string specifying the algorithm to use. Only "LM" based on Levenberg-Marquardt and "port" algorithms are implemented.}
 
-\item{inTrain}{A logical list indicating which observations are used for training}
+\item{inTrain}{A logical list indicating which observations are used for training.}
 
-\item{indp.try}{A positive decimal to indicate the probability of including all random.vars}
+\item{keep.vars}{An optional character vector of variable names that will be kept in each model. \code{keep.vars} must be part of \code{indep.vars}.}
+
+\item{adstock.vars}{An optional character vector of variable names to be adstocked. Default min max is between 0 & 0.999. \code{adstock.vars} must be part of \code{indp.vars}.}
+
+\item{adstock.min}{An optional named numeric vector of minimum adstock for each \code{adstock.vars}. Names of \code{adstock.min} must be part of \code{adstock.vars}.}
+
+\item{adstock.max}{An optional named numeric vector of maximum adstock for each \code{adstock.vars}. Names of \code{adstock.max} must be part of \code{adstock.vars}.}
+
+\item{transform.vars}{An optional named character vector of functional transformations for variables in \code{indp.vars}. Values can only be {'Power', 'PowerInv', 'NegExp', 'Log'}. Names of \code{transform.vars} must be part of \code{indp.vars}.}
+
+\item{transform.min}{An optional named numeric vector of minimum transformation for each \code{transform.vars}.}
+
+\item{transform.max}{An optional named numeric vector of maximum transformation for each \code{transform.vars}.}
+
+\item{lags}{Currently not used.}
+
+\item{indp.try}{A positive integer indicating the variables to be randomly selected as independent variables in each \code{cvTrials} trials. It can also be a function.}
 }
 \description{
 Determines nonlinear least-squares estimates marketing-mix model for a single trial.

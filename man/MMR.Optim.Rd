@@ -3,38 +3,50 @@
 \alias{MMR.Optim}
 \title{Nonlinear Least Squares Parameter Estimation}
 \usage{
-MMR.Optim(dep.var, indp.vars = character(), min.adstock, max.adstock,
-  keep.vars = character(), transform = character(), data,
-  algorithm = "LM", cvTrials, indp.try = length(indp.vars) -
-  length(keep.vars))
+MMR.Optim(dep.var, indp.vars = character(), data, algorithm = "LM",
+  cvTrials, keep.vars = character(), adstock.vars = character(),
+  adstock.min = numeric(), adstock.max = numeric(),
+  transform.vars = character(), transform.min = numeric(),
+  transform.max = numeric(), lags = numeric(), coef.min = numeric(),
+  coef.max = numeric(), indp.try = length(indp.vars) - length(keep.vars))
 }
 \arguments{
-\item{dep.var}{Dependent variable}
+\item{dep.var}{A character string for dependent variable}
 
-\item{indp.vars}{List of variable names to be tried}
-
-\item{min.adstock}{An optional list as a numeric vector of minimum adstock for each \code{indep.vars}}
-
-\item{max.adstock}{An optional list as a numeric vector of maximum adstock for each \code{indep.vars}}
-
-\item{keep.vars}{An optional list of variable names that will be kept in each model. \code{keep.vars} must be part of \code{indep.vars}}
-
-\item{transform}{TBD}
+\item{indp.vars}{A character vector of variable names to be tried}
 
 \item{data}{A dataset from in which to evaluate the \code{indp.vars}}
 
-\item{algorithm}{Character string specifying the algorithm to use. Only "LM" based on Levenberg-Marquardt and "port" algorithms are implented.}
+\item{algorithm}{A character string specifying the algorithm to use. Only "LM" based on Levenberg-Marquardt and "port" algorithms are implemented.}
 
-\item{cvTrials}{A list of logicals to indicate which variable are part of training data. MMR.Optim will repeat for every elements of \code{cvTrials}}
+\item{cvTrials}{A list of logicals to indicate which variable are part of training data. MMR.Optim will repeat for every elements of \code{cvTrials}.}
 
-\item{indp.vars.try}{Number of variables randomly sample as independant variables in each \code{cvTrials} trials}
+\item{keep.vars}{An optional character vector of variable names that will be kept in each model. \code{keep.vars} must be part of \code{indep.vars}.}
+
+\item{adstock.vars}{An optional character vector of variable names to be adstocked. Default min max is between 0 & 0.999. \code{adstock.vars} must be part of \code{indp.vars}.}
+
+\item{adstock.min}{An optional named numeric vector of minimum adstock for each \code{adstock.vars}. Names of \code{adstock.min} must be part of \code{adstock.vars}.}
+
+\item{adstock.max}{An optional named numeric vector of maximum adstock for each \code{adstock.vars}. Names of \code{adstock.max} must be part of \code{adstock.vars}.}
+
+\item{transform.vars}{An optional named character vector of functional transformations for variables in \code{indp.vars}. Values can only be {'Power', 'PowerInv', 'NegExp', 'Log'}. Names of \code{transform.vars} must be part of \code{indp.vars}.}
+
+\item{transform.min}{An optional named numeric vector of minimum transformation for each \code{transform.vars}.}
+
+\item{transform.max}{An optional named numeric vector of maximum transformation for each \code{transform.vars}.}
+
+\item{lags}{Currently not used.}
+
+\item{indp.try}{A positive integer indicating the variables to be randomly selected as independent variables in each \code{cvTrials} trials. It can also be a function.}
 }
 \description{
 Determines nonlinear least-squares estimates marketing-mix model
 }
 \details{
 MMR.Optim determines the nonlinear least-squares estimates of marketing-mix model using optimization techniques such as nls & nlsLM.
-The current functionality, for now, focuses on estimating the adstock effect with future plans to also determine dimensioning returns using power transformation or something alike.
+This approach estimates model coefficients as well as the adstock transformations and any dimensioning returns curves for each variable. This has the advantage of objectively finding the coefficients & transformations. Transformation can be modified or restricted if the user specifies optional min/max values.
+In addition, many models can be built by using the \code{cvTrials}, which is a re-sampled data points identifier. Models are then averaged according to their out-of-sample values.
+Finally, not all variables need to be tried at the same time. If the user specifies \code{indp.try} then the program will randomly select variables from the \code{indp.vars} for each \code{cvTrials}.
 }
 \author{
 Gabriel Mohanna
