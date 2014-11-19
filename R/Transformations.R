@@ -21,19 +21,30 @@ adstock <- function(x, rate=0){
     return(as.numeric(filter(x=x, filter=rate, method="recursive")))
 }
 
-#' MMR transformation function.
+
+#' Lag Time-series Function
 #' 
-#' Function Not Yet Done. Transforms advertising into adstock, power and lag version.
+#' Compute a lagged version of a time series, shifting the time forward or backward by a given number of observations.
 #' 
 #' @param x An ordered numeric vector
-#' @param adstock A decimal between 0-1
-#' @param power A decimal between 0-1
-#' @param lag An positive integer
+#' @param k The number of lags (in units of observations). Positive \code{k} shifts the time-series forward while a negative \code{k} shifts the time-series backward.
+#' @param pad A value to added
 #' 
 #' @author Gabriel Mohanna
 #' 
-#' @details
-#' Transforms advertising into adstock version
-MMR.Transform <- function(x, adstock=0, power=1, lag=0){
-    return(as.numeric(filter(x=x, filter=adstock, method="recursive"))^power)
+#' @examples
+#' lagpad(x=1:10, k=2)
+#' lagpad(x=1:10, k=-2)
+#' 
+#' @export
+lagpad <- function(x, k=0, pad=0) {
+    if(k>=0) {
+        c(rep(pad, k), x[1:(length(x)-min(k,length(x)))])[1:length(x)]
+    } else {
+        if(-k>=length(x)) {
+            rep(pad, length(x))
+        } else {
+            c(x[(abs(k)+1):length(x)], rep(pad, -k))
+        }
+    }
 }
